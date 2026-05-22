@@ -26,9 +26,10 @@
                 <div class="timer-bar">
                     <div id="timerFill"></div>
                 </div>
+                    <h2 id="question"></h2><!--QUESTION TEXT-->
                 </div>
 
-                <h2 id="question"></h2><!--QUESTION TEXT-->
+                
 
                 <img id="quizImage" class="quizImage"><!--QUESTION IMAGE-->
                 <!--OPTIONS-->
@@ -942,6 +943,11 @@ let timer;
 
 // LOAD QUESTION
 function loadQuestion(){
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });    
 
     //HIDE POPUP
     document.getElementById("popup").style.display = "none";
