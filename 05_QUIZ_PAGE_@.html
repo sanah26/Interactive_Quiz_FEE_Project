@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <title>CosmoQuiz</title>
+        <meta charset = "UTF-8"> <!--Supports all characters-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Responsive Designing-->
+        <link rel="stylesheet" href="styling.css"> <!--External Linking of CSS file-->
+       <link rel="icon" type="image/png" href="favicon.png"> <!--Favicon-->
+       </head>
+    <body>
+        <header class="navbar">
+            <h1>🚀 CosmoQuiz</h1>
+        </header>
+
+        <div class="quiz-container">
+            
+            <div class="card">
+                
+                <div class="quiz-top">
+                    <h3 id="progressText"></h3> <!--QUESTION HEADING-->
+                    <h3 id="difficulty"></h3>
+                <div class="progress-bar"><!--PROGRESS BAR-->
+                    <div id="progressFill" class="progress"></div>
+                </div>
+                <h3 id="timer">Time Left: 10s</h3>
+                <div class="timer-bar">
+                    <div id="timerFill"></div>
+                </div>
+                </div>
+
+                <h2 id="question"></h2><!--QUESTION TEXT-->
+
+                <img id="quizImage" class="quizImage"><!--QUESTION IMAGE-->
+                <!--OPTIONS-->
+                <p id="opt1" class="option" onclick="checkAnswer(0)"></p>
+                <p id="opt2" class="option" onclick="checkAnswer(1)"></p>
+                <p id="opt3" class="option" onclick="checkAnswer(2)"></p>
+                <p id="opt4" class="option" onclick="checkAnswer(3)"></p>
+            </div>
+            <!-- POPUP ON CLICKING WRONG ANSWER -->
+            <div id="popup" class="popup">
+                <div class="popup-card">
+                   <h2 id="popupTitle">⚠️ Alert</h2>
+
+                   <img id="popupImage" class="popup-image">
+                   <p>
+                    Correct Answer: 
+                    <span id="correctAnswer"></span>
+                   </p>
+
+                   <p id="popupExplanation"></p>
+
+                   <button onclick="closePopup()">Continue 🚀</button>
+                </div>
+            </div>
+            <script>
+                //QUESTION ARRAY [ARRAY OF OBJECTS]
+                let questions = [
+
+{
+    question: "Why does Mars appear red?",
+
+    options: [
+        "Volcanic lava",
+        "Iron oxide (rust) on surface",
+        "Water reflection",
+        "Carbon deposits"
+    ],
+
+    answer: "Iron oxide (rust) on surface",
+
+    level: "Easy",
+
+    explanation:
+    "Mars appears red because its soil contains iron oxide, commonly known as rust.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/kCbvedK262UGLXCLFeW5oS.jpg"
+},
+
+{
+    question: "Which planet has the shortest day?",
+
+    options: [
+        "Earth",
+        "Jupiter",
+        "Mars",
+        "Saturn"
+    ],
+
+    answer: "Jupiter",
+
+    level: "Easy",
+
+    explanation:
+    "Jupiter rotates extremely fast and completes one rotation in about 10 hours.",
+
+    image:
+    "https://static.vecteezy.com/system/resources/thumbnails/021/184/177/original/jupiter-planet-3d-footage-space-exploration-video.jpg"
+},
+
+{
+    question: "Why can't Mercury keep a thick atmosphere?",
+
+    options: [
+        "Low gravity and high temperature",
+        "Too many moons",
+        "Strong magnetic field",
+        "Presence of water"
+    ],
+
+    answer: "Low gravity and high temperature",
+
+    level: "Medium",
+
+    explanation:
+    "Mercury has weak gravity and is very close to the Sun, causing gases to escape easily.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.hQjkmhIKTSQU3plToChF0gHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "Why is Venus the hottest planet?",
+
+    options: [
+        "Closest to the Sun",
+        "Thick CO₂ atmosphere causing greenhouse effect",
+        "Fast rotation",
+        "Lack of clouds"
+    ],
+
+    answer:
+    "Thick CO₂ atmosphere causing greenhouse effect",
+
+    level: "Medium",
+
+    explanation:
+    "Venus traps heat because of its dense carbon dioxide atmosphere, creating an intense greenhouse effect.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/BSPnH7exyqzuxPxtyt3bbh.jpg"
+},
+
+{
+    question: "Why can't humans stand on Jupiter?",
+
+    options: [
+        "It has no solid surface",
+        "It is too small",
+        "It has no gravity",
+        "It is too cold"
+    ],
+
+    answer: "It has no solid surface",
+
+    level: "Easy",
+
+    explanation:
+    "Jupiter is a gas giant made mostly of gases, so there is no solid ground to stand on.",
+
+    image:
+    "https://static.vecteezy.com/system/resources/thumbnails/021/184/177/original/jupiter-planet-3d-footage-space-exploration-video.jpg"
+},
+
+{
+    question: "Why is Neptune blue?",
+
+    options: [
+        "Oxygen in atmosphere",
+        "Methane absorbing red light",
+        "Water oceans",
+        "Cloud reflection"
+    ],
+
+    answer: "Methane absorbing red light",
+
+    level: "Medium",
+
+    explanation:
+    "Methane gas in Neptune’s atmosphere absorbs red light and reflects blue light.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.nvPPmoNb95yd3YmIdPRJLQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "What makes Earth unique?",
+
+    options: [
+        "Largest planet",
+        "Supports life and liquid water",
+        "Closest to Sun",
+        "No atmosphere"
+    ],
+
+    answer: "Supports life and liquid water",
+
+    level: "Easy",
+
+    explanation:
+    "Earth has the right temperature, atmosphere, and liquid water needed for life.",
+
+    image:
+    "https://images8.alphacoders.com/549/549917.jpg"
+},
+
+{
+    question: "Which planet is named after the Roman god of the sea?",
+
+    options: [
+        "Uranus",
+        "Mars",
+        "Jupiter",
+        "Neptune"
+    ],
+
+    answer: "Neptune",
+
+    level: "Easy",
+
+    explanation:
+    "Neptune was named after the Roman god of the sea because of its deep blue color.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.nvPPmoNb95yd3YmIdPRJLQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "Which planet has the coldest atmosphere?",
+
+    options: [
+        "Earth",
+        "Saturn",
+        "Neptune",
+        "Uranus"
+    ],
+
+    answer: "Uranus",
+
+    level: "Hard",
+
+    explanation:
+    "Uranus records the coldest temperatures in the solar system, even colder than Neptune.",
+
+    image:
+    "https://starwalk.space/gallery/images/uranus-facts/1920x1080.jpg"
+},
+
+{
+    question: "What are Saturn's rings mainly made of?",
+
+    options: [
+        "Lava",
+        "Ice and rock particles",
+        "Gas clouds",
+        "Dust storms"
+    ],
+
+    answer: "Ice and rock particles",
+
+    level: "Easy",
+
+    explanation:
+    "Saturn’s rings are made mostly of billions of ice particles mixed with rocks and dust.",
+
+    image:
+    "https://www.sciencefriday.com/wp-content/uploads/2022/09/saturn-rings.jpg"
+},
+
+{
+    question: "Which planet rotates on its side?",
+
+    options: [
+        "Mars",
+        "Venus",
+        "Uranus",
+        "Mercury"
+    ],
+
+    answer: "Uranus",
+
+    level: "Hard",
+
+    explanation:
+    "Uranus rotates almost completely sideways due to a massive collision long ago.",
+
+    image:
+    "https://starwalk.space/gallery/images/uranus-facts/1920x1080.jpg"
+},
+
+{
+    question: "Which planet has the Great Red Spot?",
+
+    options: [
+        "Saturn",
+        "Mars",
+        "Jupiter",
+        "Neptune"
+    ],
+
+    answer: "Jupiter",
+
+    level: "Medium",
+
+    explanation:
+    "The Great Red Spot is a giant storm on Jupiter that has existed for hundreds of years.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/8wBfJwXj4kA4v9zH7M6J7U.jpg"
+},
+
+{
+    question: "Which planet takes the longest time to orbit the Sun?",
+
+    options: [
+        "Neptune",
+        "Saturn",
+        "Mars",
+        "Venus"
+    ],
+
+    answer: "Neptune",
+
+    level: "Medium",
+
+    explanation:
+    "Neptune takes about 165 Earth years to complete one orbit around the Sun.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.nvPPmoNb95yd3YmIdPRJLQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "Which is the largest planet in the solar system?",
+
+    options: [
+        "Earth",
+        "Jupiter",
+        "Saturn",
+        "Neptune"
+    ],
+
+    answer: "Jupiter",
+
+    level: "Easy",
+
+    explanation:
+    "Jupiter is the biggest planet and could fit more than 1,300 Earths inside it.",
+
+    image:
+    "https://static.vecteezy.com/system/resources/thumbnails/021/184/177/original/jupiter-planet-3d-footage-space-exploration-video.jpg"
+},
+
+{
+    question: "Why does the Moon shine?",
+
+    options: [
+        "It produces its own light",
+        "It reflects sunlight",
+        "It contains lava",
+        "Stars light it up"
+    ],
+
+    answer: "It reflects sunlight",
+
+    level: "Easy",
+
+    explanation:
+    "The Moon does not create light. It shines because it reflects sunlight.",
+
+    image:
+    "https://images.unsplash.com/photo-1532693322450-2cb5c511067d"
+},
+{
+    question: "Which planet is known as the Morning Star?",
+
+    options: [
+        "Mars",
+        "Venus",
+        "Mercury",
+        "Saturn"
+    ],
+
+    answer: "Venus",
+
+    level: "Easy",
+
+    explanation:
+    "Venus appears very bright in the sky before sunrise and after sunset, earning the name Morning Star.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/BSPnH7exyqzuxPxtyt3bbh.jpg"
+},
+
+{
+    question: "Why does the Moon have craters?",
+
+    options: [
+        "Volcanoes",
+        "Meteor impacts",
+        "Water erosion",
+        "Earthquakes"
+    ],
+
+    answer: "Meteor impacts",
+
+    level: "Easy",
+
+    explanation:
+    "The Moon has almost no atmosphere, so meteors hit its surface directly and create craters.",
+
+    image:
+    "https://images.unsplash.com/photo-1532693322450-2cb5c511067d"
+},
+
+{
+    question: "Which planet has the strongest winds?",
+
+    options: [
+        "Earth",
+        "Neptune",
+        "Venus",
+        "Mars"
+    ],
+
+    answer: "Neptune",
+
+    level: "Medium",
+
+    explanation:
+    "Neptune experiences extremely fast winds reaching over 2,000 km/h.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.nvPPmoNb95yd3YmIdPRJLQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "What is the Sun mainly made of?",
+
+    options: [
+        "Rock",
+        "Hydrogen and helium",
+        "Ice",
+        "Oxygen"
+    ],
+
+    answer: "Hydrogen and helium",
+
+    level: "Easy",
+
+    explanation:
+    "The Sun is mostly hydrogen gas, which undergoes nuclear fusion to produce energy.",
+
+    image:
+    "https://images.unsplash.com/photo-1614728894747-a83421789f10"
+},
+
+{
+    question: "Which planet has the most moons?",
+
+    options: [
+        "Earth",
+        "Jupiter",
+        "Mars",
+        "Venus"
+    ],
+
+    answer: "Jupiter",
+
+    level: "Medium",
+
+    explanation:
+    "Jupiter has the largest number of known moons in the solar system.",
+
+    image:
+    "https://static.vecteezy.com/system/resources/thumbnails/021/184/177/original/jupiter-planet-3d-footage-space-exploration-video.jpg"
+},
+
+{
+    question: "Which planet is closest to the Sun?",
+
+    options: [
+        "Venus",
+        "Mercury",
+        "Earth",
+        "Mars"
+    ],
+
+    answer: "Mercury",
+
+    level: "Easy",
+
+    explanation:
+    "Mercury is the nearest planet to the Sun and completes an orbit in just 88 days.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.hQjkmhIKTSQU3plToChF0gHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "Why is Mars called the Red Planet?",
+
+    options: [
+        "Red oceans",
+        "Rust on the surface",
+        "Red clouds",
+        "Volcanic eruptions"
+    ],
+
+    answer: "Rust on the surface",
+
+    level: "Easy",
+
+    explanation:
+    "Iron-rich dust on Mars oxidizes and creates the planet’s reddish appearance.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/kCbvedK262UGLXCLFeW5oS.jpg"
+},
+
+{
+    question: "Which planet has visible rings?",
+
+    options: [
+        "Mercury",
+        "Venus",
+        "Saturn",
+        "Mars"
+    ],
+
+    answer: "Saturn",
+
+    level: "Easy",
+
+    explanation:
+    "Saturn’s rings are bright and easily visible because they reflect sunlight strongly.",
+
+    image:
+    "https://www.sciencefriday.com/wp-content/uploads/2022/09/saturn-rings.jpg"
+},
+
+{
+    question: "What causes day and night on Earth?",
+
+    options: [
+        "Earth orbiting the Sun",
+        "Earth rotating on its axis",
+        "Moon movement",
+        "Cloud movement"
+    ],
+
+    answer: "Earth rotating on its axis",
+
+    level: "Easy",
+
+    explanation:
+    "As Earth spins, different parts face toward or away from the Sun.",
+
+    image:
+    "https://images8.alphacoders.com/549/549917.jpg"
+},
+
+{
+    question: "Which galaxy contains our solar system?",
+
+    options: [
+        "Andromeda",
+        "Whirlpool",
+        "Milky Way",
+        "Sombrero"
+    ],
+
+    answer: "Milky Way",
+
+    level: "Easy",
+
+    explanation:
+    "Our solar system is located inside the Milky Way galaxy.",
+
+    image:
+    "https://images.unsplash.com/photo-1462331940025-496dfbfc7564"
+},
+
+{
+    question: "What is a shooting star?",
+
+    options: [
+        "A dying planet",
+        "A meteor burning in atmosphere",
+        "A comet",
+        "A satellite"
+    ],
+
+    answer: "A meteor burning in atmosphere",
+
+    level: "Medium",
+
+    explanation:
+    "A shooting star is actually a small space rock burning up as it enters Earth’s atmosphere.",
+
+    image:
+    "https://images.unsplash.com/photo-1502134249126-9f3755a50d78"
+},
+
+{
+    question: "Which planet has the tallest volcano?",
+
+    options: [
+        "Earth",
+        "Mars",
+        "Venus",
+        "Jupiter"
+    ],
+
+    answer: "Mars",
+
+    level: "Medium",
+
+    explanation:
+    "Olympus Mons on Mars is the tallest volcano in the solar system.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/kCbvedK262UGLXCLFeW5oS.jpg"
+},
+
+{
+    question: "Why is Pluto no longer called a planet?",
+
+    options: [
+        "Too cold",
+        "Too small to clear its orbit",
+        "No moons",
+        "Too far away"
+    ],
+
+    answer: "Too small to clear its orbit",
+
+    level: "Hard",
+
+    explanation:
+    "Pluto does not dominate its orbit like the major planets do, so it is classified as a dwarf planet.",
+
+    image:
+    "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6"
+},
+
+{
+    question: "Which planet spins backward?",
+
+    options: [
+        "Earth",
+        "Venus",
+        "Mars",
+        "Saturn"
+    ],
+
+    answer: "Venus",
+
+    level: "Hard",
+
+    explanation:
+    "Venus rotates in the opposite direction compared to most planets.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/BSPnH7exyqzuxPxtyt3bbh.jpg"
+},
+
+{
+    question: "What protects Earth from harmful solar radiation?",
+
+    options: [
+        "Clouds",
+        "Magnetic field",
+        "Moon",
+        "Oceans"
+    ],
+
+    answer: "Magnetic field",
+
+    level: "Medium",
+
+    explanation:
+    "Earth’s magnetic field deflects dangerous charged particles from the Sun.",
+
+    image:
+    "https://images8.alphacoders.com/549/549917.jpg"
+},
+{
+    question: "Which planet has the longest day in the solar system?",
+
+    options: [
+        "Mercury",
+        "Venus",
+        "Mars",
+        "Saturn"
+    ],
+
+    answer: "Venus",
+
+    level: "Hard",
+
+    explanation:
+    "Venus rotates extremely slowly and one Venus day lasts longer than its year.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/BSPnH7exyqzuxPxtyt3bbh.jpg"
+},
+
+{
+    question: "What is the name of the largest volcano in the solar system?",
+
+    options: [
+        "Mount Everest",
+        "Olympus Mons",
+        "Mauna Loa",
+        "Vesuvius"
+    ],
+
+    answer: "Olympus Mons",
+
+    level: "Hard",
+
+    explanation:
+    "Olympus Mons on Mars is the tallest known volcano in the solar system.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/kCbvedK262UGLXCLFeW5oS.jpg"
+},
+
+{
+    question: "Which planet has a magnetic field tilted almost completely sideways?",
+
+    options: [
+        "Earth",
+        "Mars",
+        "Uranus",
+        "Mercury"
+    ],
+
+    answer: "Uranus",
+
+    level: "Hard",
+
+    explanation:
+    "Uranus has an unusual magnetic field tilted about 59 degrees from its rotation axis.",
+
+    image:
+    "https://starwalk.space/gallery/images/uranus-facts/1920x1080.jpg"
+},
+
+{
+    question: "Why is Venus brighter than most planets in the night sky?",
+
+    options: [
+        "It is the closest planet",
+        "Its thick clouds reflect sunlight",
+        "It produces its own light",
+        "It has rings"
+    ],
+
+    answer: "Its thick clouds reflect sunlight",
+
+    level: "Hard",
+
+    explanation:
+    "Venus appears extremely bright because its thick clouds reflect a large amount of sunlight.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/BSPnH7exyqzuxPxtyt3bbh.jpg"
+},
+
+{
+    question: "Which planet experiences diamond rain according to scientists?",
+
+    options: [
+        "Earth",
+        "Neptune",
+        "Mercury",
+        "Mars"
+    ],
+
+    answer: "Neptune",
+
+    level: "Hard",
+
+    explanation:
+    "Scientists believe intense pressure inside Neptune may compress carbon into diamonds.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.nvPPmoNb95yd3YmIdPRJLQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "What causes Saturn’s rings to shine brightly?",
+
+    options: [
+        "Molten lava",
+        "Frozen ice particles reflecting sunlight",
+        "Electric currents",
+        "Solar explosions"
+    ],
+
+    answer: "Frozen ice particles reflecting sunlight",
+
+    level: "Hard",
+
+    explanation:
+    "Saturn’s rings contain billions of icy particles that strongly reflect sunlight.",
+
+    image:
+    "https://www.sciencefriday.com/wp-content/uploads/2022/09/saturn-rings.jpg"
+},
+
+{
+    question: "Which planet has the strongest gravitational pull?",
+
+    options: [
+        "Earth",
+        "Neptune",
+        "Jupiter",
+        "Saturn"
+    ],
+
+    answer: "Jupiter",
+
+    level: "Hard",
+
+    explanation:
+    "Jupiter is the most massive planet and therefore has the strongest gravity.",
+
+    image:
+    "https://static.vecteezy.com/system/resources/thumbnails/021/184/177/original/jupiter-planet-3d-footage-space-exploration-video.jpg"
+},
+
+{
+    question: "Why is Mercury heavily covered with craters?",
+
+    options: [
+        "Frequent volcanic eruptions",
+        "Lack of atmosphere",
+        "Strong winds",
+        "Heavy rainfall"
+    ],
+
+    answer: "Lack of atmosphere",
+
+    level: "Hard",
+
+    explanation:
+    "Mercury has almost no atmosphere, so meteors hit its surface directly.",
+
+    image:
+    "https://tse4.mm.bing.net/th/id/OIP.hQjkmhIKTSQU3plToChF0gHaEK?rs=1&pid=ImgDetMain&o=7&rm=3"
+},
+
+{
+    question: "Which planet has seasons lasting over 20 Earth years?",
+
+    options: [
+        "Saturn",
+        "Mars",
+        "Earth",
+        "Mercury"
+    ],
+
+    answer: "Saturn",
+
+    level: "Hard",
+
+    explanation:
+    "Because Saturn takes nearly 29 Earth years to orbit the Sun, each season lasts over 7 Earth years.",
+
+    image:
+    "https://www.sciencefriday.com/wp-content/uploads/2022/09/saturn-rings.jpg"
+},
+
+{
+    question: "What is the main reason Mars has weaker gravity than Earth?",
+
+    options: [
+        "It spins slower",
+        "It is smaller in size",
+        "It lacks oxygen",
+        "It is farther from the Sun"
+    ],
+
+    answer: "It is smaller in size",
+
+    level: "Hard",
+
+    explanation:
+    "Mars has less mass than Earth, so its gravitational pull is weaker.",
+
+    image:
+    "https://cdn.mos.cms.futurecdn.net/kCbvedK262UGLXCLFeW5oS.jpg"
+},
+
+];
+
+// GET DIFFICULTY
+
+let difficulty =
+sessionStorage.getItem("difficulty");
+
+if(difficulty == "easy"){
+
+    questions2 =
+    questions.filter(q => q.level === "Easy");
+}
+
+else if(difficulty == "medium"){
+
+    questions2 =
+    questions.filter(q => q.level === "Medium");
+}
+
+else if(difficulty == "hard"){
+
+    questions2 =
+    questions.filter(q => q.level === "Hard");
+}
+
+// RANDOMIZE questions2
+
+questions2.sort(
+    () => Math.random() - 0.5
+);
+
+// PICK RANDOM 10
+
+questions2 =
+questions2.slice(0,10);
+
+
+                 
+let current = 0;
+let score = 0;
+
+let timeLeft = 10;
+let timer;
+
+// LOAD QUESTION
+function loadQuestion(){
+
+    //HIDE POPUP
+    document.getElementById("popup").style.display = "none";
+
+    //UPDATE QUESTION TEXT
+    document.getElementById("progressText").innerHTML = "Question " + (current + 1) + " out of " + questions2.length;
+
+
+    //LEVEL
+    let levelText = questions2[current].level;
+    let difficulty = document.getElementById("difficulty");
+    difficulty.innerHTML = "Level : " + levelText;
+
+    if(levelText == "Easy"){
+        difficulty.style.color = "#22c55e";
+    }
+    else if(levelText == "Medium"){
+        difficulty.style.color = "#f97316";
+    }
+    else{
+        difficulty.style.color = "#ef4444";
+    }
+
+    //UPDATE PROGRESS BAR
+    let percent = ((current + 1) / questions2.length) * 100;
+    document.getElementById("progressFill").style.width = percent + "%";
+
+//SET questions2
+document.getElementById("question").innerHTML = questions2[current].question;
+
+//SET IMAGES
+let img = document.getElementById("quizImage");
+img.src = questions2[current].image;
+img.onerror = function(){
+    img.src = "https://i.pinimg.com/736x/09/12/4e/09124e265c102c5092097ca36c7c6b80.jpg";
+}
+
+
+//SET OPTIONS
+document.getElementById("opt1").innerHTML = questions2[current].options[0];
+document.getElementById("opt2").innerHTML = questions2[current].options[1];
+document.getElementById("opt3").innerHTML = questions2[current].options[2];
+document.getElementById("opt4").innerHTML = questions2[current].options[3];
+
+//RESET colors
+document.getElementById("opt1").style.background = "";
+document.getElementById("opt2").style.background = "";
+document.getElementById("opt3").style.background = "";
+document.getElementById("opt4").style.background = "";
+
+//Enable Click again
+document.getElementById("opt1").onclick = function(){ checkAnswer(0) };
+document.getElementById("opt2").onclick = function(){ checkAnswer(1) };
+document.getElementById("opt3").onclick = function(){ checkAnswer(2) };
+document.getElementById("opt4").onclick = function(){ checkAnswer(3) };
+
+//RESET TIMER
+timeLeft = 10;
+document.getElementById("timer").innerHTML = "Time Left: " + timeLeft + "s";
+
+// clear previous timer
+clearInterval(timer);
+
+//start timer 
+timer = setInterval(function(){
+    timeLeft--;
+    document.getElementById("timer").innerHTML = "Time Left: " + timeLeft + "s";
+
+    let timerPercent = (timeLeft / 10) * 100;
+document.getElementById("timerFill").style.width = timerPercent + "%";
+
+    if(timeLeft === 0){
+        clearInterval(timer);
+        
+        setTimeout(function(){
+            current++;
+
+        if(current<questions2.length){
+            loadQuestion();
+        }
+        else{
+            endQuiz();
+        }
+        },800);
+    }
+}, 1000);
+}
+
+// CHECK ANSWER
+function checkAnswer(index){
+
+clearInterval(timer);
+
+let selected = questions2[current].options[index].trim();
+
+let opt1 = document.getElementById("opt1");
+let opt2 = document.getElementById("opt2");
+let opt3 = document.getElementById("opt3");
+let opt4 = document.getElementById("opt4");
+
+let options = [opt1,opt2,opt3,opt4];
+
+// disable clicking again
+for(let i=0; i<options.length; i++){
+    options[i].onclick = null;
+}
+
+// CORRECT ANSWER
+// CORRECT ANSWER
+if(
+    selected.toLowerCase().trim() ===
+    questions2[current].answer.toLowerCase().trim()
+){
+
+    score++;
+
+    options[index].style.background ="#d4edda";
+
+    // TITLE
+    document.getElementById("popupTitle").innerHTML =
+    "✅ Correct Answer";
+
+    // ANSWER
+    document.getElementById("correctAnswer").innerHTML =
+    questions2[current].answer;
+
+    // EXPLANATION
+    document.getElementById("popupExplanation").innerHTML =
+    questions2[current].explanation;
+
+    // IMAGE
+    document.getElementById("popupImage").src =
+    questions2[current].image;
+
+    // SHOW POPUP
+    document.getElementById("popup").style.display ="flex";
+}
+
+// WRONG ANSWER
+else{
+
+    options[index].style.background = "#fee2e2";
+
+    // TITLE
+    document.getElementById("popupTitle").innerHTML =
+    "❌ Wrong Answer";
+
+    // CORRECT ANSWER
+    document.getElementById("correctAnswer").innerHTML =
+    questions2[current].answer;
+
+    // EXPLANATION
+    document.getElementById("popupExplanation").innerHTML =
+    questions2[current].explanation;
+
+    // IMAGE
+    document.getElementById("popupImage").src =
+    questions2[current].image;
+
+    // SHOW POPUP
+    document.getElementById("popup").style.display ="flex";
+}}
+
+
+// CLOSE POPUP
+function closePopup(){
+
+    document.getElementById("popup").style.display = "none";
+
+    current++;
+
+    if(current < questions2.length){
+        loadQuestion();
+    }
+    else{
+        endQuiz();
+    }
+}
+
+// END QUIZ
+function endQuiz(){
+
+    clearInterval(timer);
+
+    // store score
+    sessionStorage.setItem("score", score);
+    sessionStorage.setItem("total", questions2.length);
+
+    //high score
+    let highScore = localStorage.getItem("highScore") || 0;
+    if(score > highScore){
+        localStorage.setItem("highScore",score);
+    }
+
+    //leader board
+    let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+    leaderboard.push({
+        score: score,
+        time: new Date().toLocaleTimeString()
+    });
+
+    localStorage.setItem("leaderboard",JSON.stringify(leaderboard));
+
+    // redirect
+    window.location.href = "06_RESULT_PAGE_@.html";
+}
+
+// START
+loadQuestion();
+
+
+            </script>
+        
+
+            <div class="top-home-btn">
+                <a href="04_Home_page.html" class="home-btn">🏠 Home</a>
+            </div>
+        
+        </div>
+        <footer>
+            CosmoQuiz © 2026 || SG
+        </footer>
+    </body>
+</html>

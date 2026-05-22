@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <title>Login - CosmoQuiz</title>
+        <meta charset = "UTF-8"> <!--Supports all characters-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Responsive Designing-->
+        <link rel="stylesheet" href="styling.css"> <!--External Linking of CSS file-->
+        <link rel="icon" type="image/png" href="favicon.png"> <!--Favicon-->
+    </head>
+    <body>
+        <div class="login-container">
+
+             <div id="messageBox" class="message-box"></div>
+
+            <div class="login-card">
+                <div class="login-icon">🚀</div>
+                <h2>🚀 Welcome Back</h2>
+                <p>Login to continue your space adventure ✨</p>
+
+                <input type="email" id="email" placeholder="Enter Email">
+
+                <input type="password" id="password" placeholder="Enter Password">
+
+                <button onclick="loginUser()">Login</button>
+
+                <div class="auth-links">
+                    <a href="01_SIGN_UP_PAGE_@.html">Create Account</a>
+                    <a href="03_FORGOT_PASSWORD_PAGE_@.html">Forgot Password?</a>
+                </div>
+
+            </div>
+
+        </div>
+        <script>
+
+function showMessage(text){
+
+    let box =
+    document.getElementById("messageBox");
+
+    box.innerHTML = text;
+
+    box.classList.add("show");
+
+    setTimeout(function(){
+
+        box.classList.remove("show");
+
+    },3000);
+}
+
+function loginUser(){
+
+    let email = document.getElementById("email").value;
+
+    let password = document.getElementById("password").value;
+
+    let savedEmail = localStorage.getItem("email");
+
+    let savedPassword = localStorage.getItem("password");
+
+    let savedUsername = localStorage.getItem("username");
+
+    // CHECK ACCOUNT
+    if(savedEmail == null){
+
+        showMessage("Please Sign Up First 🚀");
+
+        setTimeout(function(){
+
+            window.location.href =
+            "01_SIGN_UP_PAGE_@.html";
+
+        },1500);
+
+        return;
+    }
+
+    // LOGIN SUCCESS
+    if(email === savedEmail &&
+       password === savedPassword){
+
+        let savedUsername = localStorage.getItem("username");
+
+        sessionStorage.setItem("username",savedUsername);
+
+        showMessage("Login Successful 🚀");
+
+        setTimeout(function(){
+
+            window.location.href =
+            "04_Home_page.html";
+
+        },1500);
+    }
+
+    // WRONG DETAILS
+    else{
+
+        showMessage(
+            "Invalid Email or Password ❌"
+        );
+    }
+}
+</script>
+    </body>
+</html>

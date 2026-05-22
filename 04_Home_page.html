@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CosmoQuiz</title>
+        <meta charset = "UTF-8"> <!--Supports all characters-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Responsive Designing-->
+        <link rel="stylesheet" href="styling.css"> <!--External Linking of CSS file-->
+        <link rel="icon" type="image/png" href="favicon.png"> <!--Favicon-->
+    </head>
+
+    <body>
+        <header class="navbar">
+            <h1>🚀 CosmoQuiz</h1>
+        </header>
+        <!--MAIN HOME SECTION-->
+        <section class="home"> 
+            <div class="home-left"> <!--LEFT SIDE CONTENT-->
+                <p class="badge">NEW QUIZ AVAILABLE</p> <!--BADGE-->
+
+                <h1>
+                    Ready for a <br><span>Stellar</span><br>
+                    Adventure? 
+                </h1>
+                <!--INTRO PARA-->
+                <p class="introduction">
+                    Welcome, space explorer! Test your knowledge of the cosmos and earn your wings in the intergalactic academy.
+                </p>
+
+
+                <div class="card">
+                    <h3>📋 Mission Briefing</h3>
+                    <ul>
+                        <!--LIST OF INSTRUCTIONS-->
+                        <li>📄 Answer 10 challenging questions.</li>
+                        <li>🪐 Focused on one topic: <b>Planetary Systems</b></li>
+                        <li>💯 Track your score and test your knowledge.</li>
+                    </ul>
+                </div>
+
+                <div class="difficulty-section">
+
+                    <h3 class="difficulty-title">
+                         🌌 Choose Your Difficulty
+                    </h3>
+
+                    <p class="difficulty-subtitle">
+                        Select your cosmic challenge level
+                    </p>
+                    <div class="difficulty-buttons">
+                        <button onclick="setDifficulty('easy')">
+                             Easy ☄️
+                        </button>
+
+                        <button onclick="setDifficulty('medium')">
+                            Medium 🛰️
+                        </button>
+
+                        <button onclick="setDifficulty('hard')">
+                            Hard 🌕
+                        </button>
+
+    </div>
+
+</div>
+                
+            </div>
+
+            <!--RIGHT SIDE BUTTON-->
+            <div class="home-right">
+                <div class="planet">🚀</div>
+                <img src="astronaut.png" class="home-image">
+            </div>
+        </section>
+        <script>
+            function setDifficulty(level){
+                sessionStorage.setItem("difficulty", level);
+                window.location.href = "05_QUIZ_PAGE_@.html";
+}
+        </script>
+
+        <!--FOOTER-->
+        <footer>
+            CosmoQuiz © 2026 || SG
+        </footer>
+    </body>
+</html>

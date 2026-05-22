@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <title>CosmoQuiz</title>
+        <meta charset = "UTF-8"> <!--Supports all characters-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Responsive Designing-->
+        <link rel="stylesheet" href="styling.css"> <!--External Linking of CSS file-->
+        <link rel="icon" type="image/png" href="favicon.png"> <!--Favicon-->
+    </head>
+    <body>
+        <header class="navbar">
+             <h1>🚀 CosmoQuiz</h1>
+        </header>
+
+        <div class="result-container">
+            <img src="https://static.vecteezy.com/system/resources/previews/028/754/650/large_2x/3d-purple-trophy-cup-winner-icon-for-ui-ux-web-mobile-apps-social-media-ads-designs-png.png" class="result-image">
+            <!--MAIN HEADING-->
+            <h1>🚀 Mission Accomplished</h1>
+            <!-- USERNAME -->
+             <h2>Great Job, <span id="username"></span> !🚀 </h2>
+             <p id="message" class="result-subtitle"></p>
+            <!--SUBTITLE-->
+            <!-- TOP CARDS -->
+             <div class="top-cards">
+                <div class="card result-card">
+                    <p>🚀 FINAL SCORE</p>
+                    <h2 id="score">--/10</h2>
+                </div>
+                <div class="card result-card">
+                    <p>🎯 ACCURACY</p>
+                    <h2 id="accuracy">--%</h2>
+                </div>
+            </div>
+            <!-- HIGH SCORE -->
+             <div class="highscore-section">
+                <div class="card highscore-card">
+                    <p>🔥 HIGH SCORE</p>
+                    <h2 id="highScore">0/10</h2>
+                </div>
+            </div>
+            <!-- LEADERBOARD -->
+             <div class="leaderboard-card">
+                <h2>🏆 Leaderboard</h2>
+                <div id="leaderboardList"></div>
+            </div>
+            </div>
+            <script>
+                let score = Number(sessionStorage.getItem("score"));
+                let total = Number(sessionStorage.getItem("total"));
+                let name = sessionStorage.getItem("username");
+
+                if(!score) score = 0;
+                if(!total) total = 10;
+
+                let accuracy =Math.round( (score * 100) / total);
+
+                //show score
+                document.getElementById("score").innerHTML = score + "/" + total;
+
+                //show accuracy
+                document.getElementById("accuracy").innerHTML = accuracy + "%";
+
+                //show name
+                if(name && name != null){
+                    document.getElementById("username").innerHTML = name;
+                }
+                else{
+                    document.getElementById("username").innerHTML = "Explorer";
+                }
+
+                let message = "";
+
+                if(accuracy >= 80){
+                    message = "🌟 Space Expert!";
+                }
+                else if(accuracy >= 50){
+                    message = "🚀 Good Job!";
+                }
+                else{
+                    message = "🪐 Keep Practicing!";
+                }
+
+                document.getElementById("message").innerHTML = message;
+
+                let highScore = localStorage.getItem("highScore") || 0;
+
+                document.getElementById("highScore").innerHTML = highScore + "/10";
+
+                let msgBox = document.getElementById("message");
+
+                if(accuracy >= 80){
+                      msgBox.style.background = "#d4edda";
+                }
+                else if(accuracy >= 50){
+                    msgBox.style.background = "#fff3cd";
+                }
+                else{
+                   msgBox.style.background = "#f8d7da";
+                }
+
+                //leader board
+                // LEADERBOARD
+                // LEADERBOARD
+let leaderboard =
+JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+// GET DETAILS
+let currentUser =
+sessionStorage.getItem("username");
+
+let difficulty =
+sessionStorage.getItem("difficulty");
+
+// TIME WITHOUT SECONDS
+let currentTime =
+new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit'
+});
+
+// NEW ENTRY
+let newEntry = {
+    name: currentUser,
+    score: score,
+    difficulty: difficulty,
+    time: currentTime
+};
+
+// ADD ENTRY
+leaderboard.push(newEntry);
+
+// SAVE
+localStorage.setItem(
+    "leaderboard",
+    JSON.stringify(leaderboard)
+);
+
+// DISPLAY
+let board = "";
+
+for(let i = leaderboard.length - 1; i >= 0; i--){
+
+    if(leaderboard[i].name == null ||
+       leaderboard[i].name == "undefined"){
+
+        continue;
+    }
+
+    board += `
+    <div class="leaderboard-item">
+        🏆 ${leaderboard[i].name}
+        | 🎯 ${leaderboard[i].score}/10
+        | 🚀 ${leaderboard[i].difficulty}
+        | ⏰ ${leaderboard[i].time}
+    </div>`;
+}
+
+// SHOW
+document.getElementById(
+    "leaderboardList"
+).innerHTML = board;
+
+
+            </script>
+
+            <div class="result-buttons">
+                <a href="05_QUIZ_PAGE_@.html" class="next-btn">Restart Quiz</a>
+                <a href="04_Home_page.html" class="back-btn">Back to Home</a>
+            </div>
+        </div>
+        <footer>
+            CosmoQuiz © 2026 || SG
+        </footer>
+    </body>
+</html>
